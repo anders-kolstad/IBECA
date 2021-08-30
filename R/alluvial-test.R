@@ -122,23 +122,23 @@ ggplot(aes(y = n, x = keytest, stratum = Dataset, alluvium = Cohort)) +
 
 library(readxl)
 ind <- read_excel("data/Indikatorer.xlsx", 
-                          sheet = "alluvial-indicators")
+                          sheet = "indikatorer")
 
 ind$freq <- 1
 
-ind$Utgår[is.na(ind$Utgår)] <- "Nei"
+ind$utgår[is.na(ind$utgår)] <- "Nei"
 ind <- ind%>%
-  filter(Utgår == "Nei")%>%
-  to_lodes_form(key = key, value = node, id = "Cohort", axes=c("node","Datasettnavn", "pavirkning1"))
+  filter(utgår == "Nei")%>%
+  to_lodes_form(key = key, value = node, id = "Cohort", axes=c("node","datasetName", "paavirkning1"))
 
 
 ind%>%
   ggplot(aes(y = freq, x = key, stratum = node, alluvium = Cohort)) +
-  geom_alluvium(aes(fill = Egenskap), aes.bind='flows', width = 1/12) +   # aes.bind har ingen effekt her
+  geom_alluvium(aes(fill = egenskap1), aes.bind='flows', width = 1/12) +   # aes.bind har ingen effekt her
   #geom_stratum(width = 1/4,  aes(fill = Egenskap), color = "black") +
-  stat_stratum(width = 1/4,  aes(fill = Egenskap), color = "black") +
+  stat_stratum(width = 1/4,  aes(fill = egenskap1), color = "black") +
   geom_text(stat = "stratum", aes(label = after_stat(stratum))) +
-  scale_x_discrete(limits = c("Datasettnavn", "node", "pavirkning1"),
+  scale_x_discrete(limits = c("datasetName", "node", "paavirkning1"),
                    labels = c("Datasett", "Indikator", "Påvirkning"),
                    expand = c(.1, .1),
                    position="top") +
