@@ -1,6 +1,6 @@
 libs <- c('dplyr', 'stringr', 'forcats',     # wrangling
           'knitr','kableExtra',               # table styling
-          'ggplot2','alluvial','ggalluvial',  # plots
+          'ggplot2','ggalluvial',  # plots
           'nycflights13')                     # data
 invisible(lapply(libs, library, character.only = TRUE))
 
@@ -31,6 +31,11 @@ fly <- flights %>%
 
 # Plot --------------------------------------------------------------------
 
+fly <- fly %>% 
+  mutate(origin = fct_rev(as.factor(origin)),
+         carrier = fct_rev(as.factor(carrier)),
+         dest = fct_rev(as.factor(dest))) %>% 
+  filter(n > 150)
 
 
 fly %>% 

@@ -53,6 +53,12 @@ allNodes <- data.frame(node = allNodes,
                        type = rep(c("A", "B", "C"), 
                                   times=myTimes))
 
+# ids for subsetting in the DAG
+ids <- row.names(allNodes)[allNodes$type == "B"]
+ids2 <- row.names(allNodes)[allNodes$type != "B"]
+
+
+# field for tooltip
 
 
 allNodes
@@ -110,10 +116,11 @@ rm(tilstandTilEgenskap, to, from)
 edges1$rel <- "A"
 edges2$rel <- "B"
 
-
+edges <- rbind(edges1, edges2)
 
 
 # Plot --------------------------------------------------------------------
+
 
 
 myDAG <- create_graph( 
@@ -131,14 +138,20 @@ myDAG <- create_graph(
   
    # global styling of nodes
   set_node_attrs(node_attr = shape, values =  "box") %>%
-  set_node_attrs(node_attr = width, values =  1.5) %>%
+  set_node_attrs(node_attr = width, values =  3.1, nodes = ids) %>%  # width of egenskaper
+  set_node_attrs(node_attr = width, values =  1.5, nodes = ids2) %>%  # width of the rest
   set_node_attrs(node_attr = peripheries, value = 1.5) %>%
   set_node_attrs(node_attr = penwidth, value = 3) %>%
   #set_node_position(1, x=1, y=1)%>%
 
-  # edges from påvirkning til tilstand
+  # node width
+  #select_nodes(conditions = type == "B") %>%
+  #set_node_attrs_ws(node_attr = width, values =  1) %>%
+  #clear_selection()%>%
+  
+  # edges
   add_edges_from_table(
-    table = edges1,
+    table = edges,
     rel_col = rel,
     from_col = from,
     to_col = to,
@@ -150,17 +163,10 @@ myDAG <- create_graph(
   clear_selection() %>%
   
   
-  # edges from tilstand til egenskap
-  add_edges_from_table(
-    table = edges2,
-    from_col = from,
-    to_col = to,
-    from_to_map = label    
-  ) %>%
-  
   # edge colour
   set_edge_attrs(edge_attr = color, values = "black") %>%
   
+ 
   
   # colouring the nodes
   select_nodes(conditions = type == "A") %>%
@@ -182,24 +188,25 @@ myDAG <- create_graph(
   
   select_nodes(conditions = label == "Areal uten tekniske inngrep") %>%
   set_node_attrs_ws(node_attr = label, value = "Areal uten\ntekniske inngrep") %>%
-  clear_selection() %>%
-  
-  
-  select_nodes(conditions = label == "Biomasse mellom trofiske nivåer") %>%
-  set_node_attrs_ws(node_attr = label, value = "Biomasse mellom\ntrofiske nivåer") %>%
-  clear_selection() %>%
-  
-  select_nodes(conditions = label == "Funksjonell sammensetning innen trofiske nivåer") %>%
-  set_node_attrs_ws(node_attr = label, value = "Funksjonell\nsammensetning innen\ntrofiske nivåer") %>%
-  clear_selection() %>%
-  
-  select_nodes(conditions = label == "Funksjonelt viktige arter og strukturer") %>%
-  set_node_attrs_ws(node_attr = label, value = "Funksjonelt viktige\narter og strukturer") %>%
-  clear_selection() %>%
-  
-  select_nodes(conditions = label == "Landskapsøkologiske mønstre") %>%
-  set_node_attrs_ws(node_attr = label, value = "Landskapsøkologiske\nmønstre")
   clear_selection()
+
+  
+  
+ # select_nodes(conditions = label == "Biomasse mellom trofiske nivåer") %>%
+ # set_node_attrs_ws(node_attr = label, value = "Biomasse mellom\ntrofiske nivåer") %>%
+ # clear_selection() %>%
+   
+ # select_nodes(conditions = label == "Funksjonell sammensetning innen trofiske nivåer") %>%
+ # set_node_attrs_ws(node_attr = label, value = "Funksjonell\nsammensetning innen\ntrofiske nivåer") %>%
+ # clear_selection() %>%
+  
+ # select_nodes(conditions = label == "Funksjonelt viktige arter og strukturer") %>%
+ # set_node_attrs_ws(node_attr = label, value = "Funksjonelt viktige\narter og strukturer") %>%
+ # clear_selection() %>%
+ # 
+ # select_nodes(conditions = label == "Landskapsøkologiske mønstre") %>%
+ # set_node_attrs_ws(node_attr = label, value = "Landskapsøkologiske\nmønstre")%>%
+ # clear_selection()
  
 
 
