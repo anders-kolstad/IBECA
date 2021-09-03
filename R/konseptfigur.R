@@ -5,7 +5,7 @@ library(DiagrammeR)
 grViz("digraph{
 
      graph [compound = true, nodesep = .5, ranksep = .5,
-         color = crimson]
+         color = crimson, rankdir = TB]
 
   node [fontname = Helvetica, fontcolor = darkslategray,
         shape = rectangle, fixedsize = true, width = 2,
@@ -25,10 +25,15 @@ grViz("digraph{
       Tilstand -> Areal
   }
        
-       Tilstand -> øko [ltail = cluster0]
+       Tilstand -> øko [ltail = cluster0, headport = n, tailport = s, x= 1]
 }")
 
 
 
-  
+
+
+
+
+
+
      
